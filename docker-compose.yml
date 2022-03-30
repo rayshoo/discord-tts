@@ -1,0 +1,52 @@
+services:
+  bot1:
+    container_name: tts-bot-1
+    build: .
+    volumes:
+    - type: bind
+      source: ./config/config-01.ini
+      target: /config.ini
+    command: ["./wait-for-it.sh", "database1:5432", "cache1:6379", "--strict", "--", "python3", "-u", "main.py"]
+    depends_on: [database1, cache1]
+    restart: always
+  database1:
+    container_name: tts-database-1
+    image: postgres:13
+    environment: 
+      POSTGRES_USER: tts
+      POSTGRES_PASSWORD: tts_password
+    restart: always
+  cache1:
+    container_name: tts-cache-1
+    image: eqalpha/keydb:latest
+    volumes:
+    - type: bind
+      source: ./keydb.conf
+      target: /etc/keydb/keydb.conf
+    restart: always
+  ##################################################################################################################
+  bot2:
+    container_name: tts-bot-2
+    build: .
+    volumes:
+    - type: bind
+      source: ./config/config-02.ini
+      target: /config.ini
+    command: ["./wait-for-it.sh", "database2:5432", "cache2:6379", "--strict", "--", "python3", "-u", "main.py"]
+    depends_on: [database2, cache2]
+    restart: always
+  database2:
+    container_name: tts-database-2
+    image: postgres:13
+    environment: 
+      POSTGRES_USER: tts
+      POSTGRES_PASSWORD: tts_password
+    restart: always
+  cache2:
+    container_name: tts-cache-2
+    image: eqalpha/keydb:latest
+    volumes:
+    - type: bind
+      source: ./keydb.conf
+      target: /etc/keydb/keydb.conf
+    restart: always

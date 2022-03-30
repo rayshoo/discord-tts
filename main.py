@@ -199,6 +199,7 @@ class TTSBot(_commands.AutoShardedBot):
         self.pool, self.gtts = await asyncio.gather(
             cast(Awaitable[Pool], asyncpg.create_pool(**db_info)),
             asyncgTTS.setup(premium=False, session=self.session),
+            # asyncgTTS.setup(premium=False, session=self.session, base_url=URL_OF_YOUR_VERSION_OF_easy-gtts-api),
         )
 
         # Fill up bot.channels, as a load of webhooks

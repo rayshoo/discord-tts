@@ -7,8 +7,10 @@ RUN git clone https://github.com/vishnubob/wait-for-it wait-for-it && \
     cd wait-for-it && chmod +x wait-for-it.sh && mv wait-for-it.sh / && \
     cd / && rm -rf wait-for-it
 
-RUN git clone https://github.com/aio-libs/aiohttp aiohttp-git && cd aiohttp-git && \
-    git reset --hard 3250c5d75a54e19e2825d0a609f9d9cd4bf62087 && \
+# Deprecated git protocol fix
+# https://github.com/rayshoo/aiohttp/commit/bd45f08a2a2991cd2b9ba1499f9f36918277d965
+RUN git clone https://github.com/rayshoo/aiohttp aiohttp-git && cd aiohttp-git && \
+    git checkout discord && \
     git submodule update --init && make cythonize && cd /
 
 RUN git clone https://github.com/numediart/MBROLA MBROLA && \
